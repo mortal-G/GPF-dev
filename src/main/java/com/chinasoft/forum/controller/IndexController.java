@@ -1,17 +1,43 @@
-package com.chinasoft.forum;
+package com.chinasoft.forum.controller;
 
+
+import com.alibaba.fastjson.JSONObject;
+import com.chinasoft.forum.dal.entity.User;
+import com.chinasoft.forum.service.RedisService;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Random;
+import java.util.*;
 
 @Controller
 public class IndexController {
+    private JSONObject json = new JSONObject();
+
+    @Autowired
+    private RedisService redisUtils;
 
     @RequestMapping("/")
     public String toIndex(){
+        return "index";
+    }
+
+    @RequestMapping("star")
+    public String Star(){
+        redisUtils.set("1","点赞");
+        User person1 = new User();
+        User person2 = new User();
+        User person3 = new User();
+        person1.setNickName("1");
+        person2.setNickName("2");
+        person3.setNickName("3");
+        List<User> list = new ArrayList<>();
+        list.add(person1);
+        list.add(person2);
+        list.add(person3);
+        redisUtils.set("redis_list_test", json.toJSONString(list));
         return "index";
     }
 
@@ -30,6 +56,8 @@ public class IndexController {
             String code=RandomCode();
             email.setMsg("您正在注册聚集地论坛，您的验证码为： "+code+"。 如非本人操作，请忽略本邮件。");//设置发送内容
             email.send();//进行发送
+            redisUtils.set("code",code);
+            redisUtils.expire("code",100);
         } catch (EmailException e) {
             e.printStackTrace();
         }
