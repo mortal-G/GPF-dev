@@ -7,4 +7,6 @@ public interface UserService {
     User signIn(String email,String password);
 
     void signUp(User user);
+
+    boolean checkRepeat(String email);
 }

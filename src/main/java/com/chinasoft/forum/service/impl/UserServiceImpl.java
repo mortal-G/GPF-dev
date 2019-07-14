@@ -24,4 +24,14 @@ public class UserServiceImpl implements UserService {
     public void signUp(User user) {
         userRepository.save(user);
     }
+
+
+    @Override
+    public boolean checkRepeat(String email) {   //检查是否重复注册
+        User user=userRepository.findByUserEmail(email);
+        if(user==null){                         //可以注册返回true
+            return true;
+        }else                                   //否则返回false
+        return false;
+    }
 }
