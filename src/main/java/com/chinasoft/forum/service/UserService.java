@@ -9,4 +9,8 @@ public interface UserService {
     void signUp(User user);
 
     boolean checkRepeat(String email);
+
+    User userCoookie(String email);
+
+    void update(User user);
 }

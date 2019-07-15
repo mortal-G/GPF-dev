@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+    <meta charset="UTF-8">
+    <title>修改个人信息</title>
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/js/info.js"></script>
+    <script src="/layui/layui.js"></script>
+    {{>layout/head}}
+
+    <!--<link rel="stylesheet" href="/layui/css/layui.css">-->
+
+    <!--<script src="../js/messages_zh.js"></script>-->
+</head>
+<body>
+{{>layout/navbar}}
+<div class="container" style="margin-top: 80px">
+    <!--主体-->
+    <div class="card">
+        <div class="card-header text-center">
+            我的个人信息
+        </div>
+        <div class="card-body row " >
+            <div class="col-1"></div>
+            <form action="" id="updateProfileForm" class="col-7" >
+                <div class="form-group row">
+                    <label for="userNickname" class="col-sm-2 col-form-label">昵&nbsp;&nbsp;&nbsp;&nbsp;称 <span style="color: red">*</span></label>
+                    <div class="">
+                        <input type="text" class="form-control" id="userNickname" value="">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="userNickname" class="col-sm-2 col-form-label">性&nbsp;&nbsp;&nbsp;&nbsp;别</label>
+                    <div class="">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                            <label class="form-check-label" for="inlineRadio1">男</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                            <label class="form-check-label" for="inlineRadio2">女</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="userBirthday" class="col-sm-2 col-form-label">生&nbsp;&nbsp;&nbsp;&nbsp;日</label>
+                    <div class="">
+                        <input type="text" class="form-control" id="userBirthday" placeholder="YYYY/MM/DD" value="">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">地&nbsp;&nbsp;&nbsp;&nbsp;区</label>
+                    <div class="form-group ">
+                        <!--<label for="inputProvince"></label>-->
+                        <select id="inputProvince" onchange="getCity()" class="form-control" style="width: 190px">
+                            <option value="" style="display: none;" disabled selected>选择省</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                    <div class="form-group ">
+                        <!--<label for="inputCity">State</label>-->
+                        <select id="inputCity" class="form-control" style="width: 190px">
+                            <option value="" style="display: none;" disabled selected>选择城市</option>
+                            <option>...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">爱&nbsp;&nbsp;&nbsp;&nbsp;好</label>
+                    <div class="">
+                        <div class=" row toggle-button" style="margin-left: 2px">
+                            <button type="button" class="btn btn-outline-secondary" data-toggle="button"
+                                    aria-pressed="false" autocomplete="off">
+                                音乐
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" data-toggle="button"
+                                    aria-pressed="false" autocomplete="off">
+                                电影
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" data-toggle="button"
+                                    aria-pressed="false" autocomplete="off">
+                                动漫
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" data-toggle="button"
+                                    aria-pressed="false" autocomplete="off">
+                                电竞
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" data-toggle="button"
+                                    aria-pressed="false" autocomplete="off">
+                                读书
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" data-toggle="button"
+                                    aria-pressed="false" autocomplete="off">
+                                数码
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" data-toggle="button"
+                                    aria-pressed="false" autocomplete="off">
+                                摄影
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" data-toggle="button"
+                                    aria-pressed="false" autocomplete="off">
+                                美食
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row btn-group-toggle"></div>
+                <div class="form-group row">
+                    <label for="userSignature" class="col-sm-2 col-form-label">个性签名</label>
+                    <div >
+                        <textarea type="text" class=" form-control" id="userSignature" value="" maxlength="100" style="width: 380px"></textarea>
+                    </div>
+                </div>
+                <div class="text-center"><button type="button" class="btn btn-outline-info" id="btnUpdateProfile" >
+                    修改个人信息
+                </button></div>
+
+            </form>
+            <hr style="width:1px;height:380px; ">
+            <div class="col-3">
+                <div class="form-group" style="text-align: center;margin-top: 90px;margin-left: 70px">
+                    <!--<div class="row">-->
+                        <input type="image" class="nav-item rounded-circle" id="userAvatar" data-toggle="modal"
+                               data-target="#changeAvatarModal" src="/img/no_avatar.png" width="100px" height="100px"
+                               alt="" title="更换头像">
+                        <!--<div>-->
+                            <h4>xxx@qq.com</h4>
+                            <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#changePasswordModal">
+                                更改密码
+                            </button>
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document" style="max-width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">更改密码</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" id="changePasswordForm">
+                <div class="modal-body">
+                    <p>
+                    <div class="form-group row">
+                        <label for="userEmail" class="col-sm-4 col-form-label">当前用户</label>
+                        <div class="">
+                            <input type="text" readonly class="form-control-plaintext" id="userEmail" name="userEmail"
+                                   value="xxx@qq.com">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-4 col-form-label">旧&nbsp;&nbsp;密&nbsp;&nbsp;码</label>
+                        <div class="">
+                            <input type="password" class="form-control" id="password" name="password" value="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="newPassword" class="col-sm-4 col-form-label">新&nbsp;&nbsp;密&nbsp;&nbsp;码</label>
+                        <div class="">
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" value="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="confirmPassword" class="col-sm-4 col-form-label">确认新密码</label>
+                        <div class="">
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                   value="">
+                        </div>
+                    </div>
+                    </p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btnChangePassword" class="btn btn-primary" data-dismiss="modal">确认
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changeAvatarModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">更换头像</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body ">
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="test1">上传图片</button><p>文件大小不超过1M</p>
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="demo1" style="width: 250px;height: 250px">
+                        <p id="demoText"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{>layout/footer}}
+
+
+</body>
+
+<script>
+    layui.use('upload', function () {
+        var $ = layui.jquery
+            ,upload = layui.upload;
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            ,url: '/upload/'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        getProvince();
+    });
+
+    $(function () {
+        $("#changePasswordForm").validate({
+            rules: {
+                password: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 16
+                },
+                newPassword: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 16
+                },
+                confirmPassword: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 16,
+                    equalTo: "#newPassword"
+                },
+                action: "required"
+            },
+            messages: {
+                password: {
+                    required: "旧密码为必填项",
+                    minlength: "密码长度不能小于 6 位",
+                    maxlength: "密码长度不能大于 16 位"
+                },
+                newPassword: {
+                    required: "新密码为必填项",
+                    minlength: "密码长度不能小于 6 位",
+                    maxlength: "密码长度不能大于 16 位"
+                },
+                confirmPassword: {
+                    // required: "该字段为必填项",
+                    minlength: "密码长度不能大于 6 位",
+                    maxlength: "密码长度不能大于 16 位",
+                    equalTo: "两次输入的密码不一致"
+                },
+                action: "Please provide some data"
+            }
+        });
+
+        $("#updateProfileForm").validate({
+            rules: {
+                userNickname: {
+                    required: true,
+                    maxlength: 10
+                },
+                userBirthday: {
+                    required: true,
+                    dateISO:true,
+                    maxlength: 10
+                },
+                action: "required"
+            },
+            messages: {
+                userNickname: {
+                    required: "旧密码为必填项",
+                    maxlength: "昵称长度不能大于 10 位"
+                },
+                userBirthday: {
+                    required: "新密码为必填项",
+                    dateISO: "请输入有效的日期格式"
+                },
+                action: "Please provide some data"
+            }
+
+        });
+    });
+
+    $("#btnUpdateProfile").click(function () {
+        var hobby = "";
+        $(".toggle-button button").each(function () {
+            if ($(this).hasClass("active")) {
+                hobby += $(this).text().trim() + " ";
+            }
+        });
+        console.log(hobby);
+    });
+
+    function getProvince() {
+        str="";
+        for (var i = 0; i < provinceArr.length; i++) {
+            str+="<option>"+provinceArr[i]+"</option>";
+        }
+        $("#inputProvince").html(str);
+    }
+
+    function getCity() {
+        //1.获取省份选择框的对象
+        // var provincesobj = $("#inputProvince");
+        var provincesobj = document.getElementById("inputProvince");
+        //2.获取市县选择框的对象
+        // var cityobj = $("#inputCity");
+        var cityobj = document.getElementById("inputCity");
+        //3.获取被选择的省份的索引
+        var index = provincesobj.selectedIndex;
+        //alert(provincesobj[index].value+","+provincesobj[index].text);
+        ////4.通过省份的索引获取它的value值，value值也是它在数组的索引值
+        var value = provincesobj[index].value;
+        //5.获取对应省份的市县数组
+        var cityName = cityArr[index];
+        //6.将下拉框清楚索引为0之后的，只保留第一个
+        cityobj.length = 1;
+        //通过循环遍历市县元素给下拉框赋值
+        for (var i = 1; i < cityName.length; i++) {
+            cityobj.options[cityobj.options.length] = new Option(cityName[i], i);
+        }
+
+    }
+
+
+
+    $("#btnChangePassword").click(function () {
+        // var userEmail = $("#userEmail").val();
+        var password = $("#password").val();
+        var newPassword = $("#newPassword").val();
+        var confirmPassword = $("#confirmPassword").val();
+        $.ajax({
+            type: "post",
+            url: "/changePassword",
+            data: {
+                // "userEmail": userEmail,
+                "password": password,
+                "newPassword": newPassword, "confirmPassword": confirmPassword
+            },
+            success: function (data) {
+                console.log(data);
+                if (data === "密码修改成功") {
+                    alert(data);
+                    bootoast.toast({
+                        message: data,
+                        type: 'success',
+                        position: 'right-bottom',
+                        icon: 'default',
+                        timeout: 2,
+                        animationDuration: 300,
+                        dismissible: true
+                    });
+                }
+                else {
+                    alert(data);
+                    bootoast.toast({
+                        message: data,
+                        type: 'danger',
+                        position: 'right-bottom',
+                        icon: 'default',
+                        timeout: 2,
+                        animationDuration: 300,
+                        dismissible: true
+                    });
+                    $('#changePasswordForm')[0].reset();
+                }
+            },
+            error:function(data){
+                console.log(data);
+            }
+        });
+    });
+
+</script>
+</html>

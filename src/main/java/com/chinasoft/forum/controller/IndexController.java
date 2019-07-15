@@ -2,13 +2,19 @@ package com.chinasoft.forum.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.chinasoft.forum.configure.OnlineUserList;
 import com.chinasoft.forum.dal.entity.User;
 import com.chinasoft.forum.service.RedisService;
+import com.chinasoft.forum.service.UserService;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 @Controller
@@ -18,15 +24,46 @@ public class IndexController {
     @Autowired
     private RedisService redisUtils;
 
+    @Autowired
+    private UserService userService;
+
 //    private List<String> codeList=new ArrayList<>();
 
     @RequestMapping("/")
-    public String Start(){
+    public String Start(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (LoginController.COOKIE_NAME.equals(cookie.getName())) {
+                    String email=cookie.getValue();
+                    User user=userService.userCoookie(email);
+                    String password=redisUtils.get(email+LoginController.COOKIE_NAME);
+                    if(user.getUserPassword().equals(password)) {
+                        if (OnlineUserList.containsKey(email)) {
+                            HttpSession session = OnlineUserList.get(email);
+                            session.invalidate();
+                            OnlineUserList.remove(email);
+                            HttpSession newSession = request.getSession();
+                            newSession.setAttribute("User", user);
+                            OnlineUserList.put(email, newSession);
+                            return "index";
+                        } else {
+                            request.getSession().setAttribute("User", user);
+                            OnlineUserList.put(email, request.getSession());
+                            return "index";
+                        }
+                    }else {
+                        return "login";
+                    }
+                }
+            }
+        }
         return "login";
+
     }
 
     @RequestMapping("/index")
-    public String toIndex(){
+    public String toIndex() {
         return "index";
     }
 
