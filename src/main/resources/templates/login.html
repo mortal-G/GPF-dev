@@ -123,7 +123,7 @@
 									发送验证码
 								</a>
 							</div>
-							<button class="lowin-btn" style="margin-top: 15px" onclick="signup()">
+							<button class="lowin-btn" style="margin-top: 15px" type="button" onclick="signup()">
 								注册
 							</button>
 
@@ -240,7 +240,7 @@
             var veriCode=$("#veriCode").val();
             $.ajax({
                 type: "post",
-                url: "signinAction",
+                url: "signupAction",
                 data: {
                     "email": email,
                     "password": password,

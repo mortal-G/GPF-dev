@@ -108,7 +108,7 @@ var Auth = {
 		Auth.vars.lowin_login.querySelector('form').setAttribute('action', option.login_url);
 
 		var len = Auth.vars.box.length - 1;
-
+		//
 		for(var i = 0; i <= len; i++) {
 			if(i !== 0) {
 				Auth.vars.box[i].className += ' lowin-flip';
