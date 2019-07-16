@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Random;
 
 @Controller
@@ -55,12 +56,14 @@ public class LoginController {
                 } else {  //两台机器登录同一账号，后一个把前一个挤掉
                     session.invalidate();
                     OnlineUserList.remove(email);
+                    user.setThisLogTime(new Date());
                     newSession.setAttribute("User", user);
                     OnlineUserList.put(email, newSession);
                     addCookie(response,user);
                     return "登录成功";
                 }
             } else {  //该账号未登陆，正常进行登录
+                user.setThisLogTime(new Date());
                 newSession.setAttribute("User", user);
                 OnlineUserList.put(email, newSession);
                 modelMap.put("user", user);
@@ -82,7 +85,7 @@ public class LoginController {
         String code = new String();
         String msg = new String();
         code = redisService.get(email);
-        if(userService.checkRepeat(email)){
+        if(!userService.checkRepeat(email)){
             msg="该邮箱已被注册";
             return msg;
         }
@@ -103,6 +106,8 @@ public class LoginController {
         user.setUserPassword(password);
         user.setNickName(email);
         user.setAvatar("/img/no_avatar.png");
+        user.setRegTime(new Date());
+        user.setThisLogTime(new Date());
         userService.signUp(user);
         request.getSession().setAttribute("User", user);
         modelMap.put("user", user);

@@ -11,6 +11,7 @@ import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ public class IndexController {
 
 //    private List<String> codeList=new ArrayList<>();
 
-    @RequestMapping("/")
+    @RequestMapping( "/")
     public String Start(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -38,21 +39,26 @@ public class IndexController {
                     String email=cookie.getValue();
                     User user=userService.userCoookie(email);
                     String password=redisUtils.get(email+LoginController.COOKIE_NAME);
-                    if(user.getUserPassword().equals(password)) {
-                        if (OnlineUserList.containsKey(email)) {
-                            HttpSession session = OnlineUserList.get(email);
-                            session.invalidate();
-                            OnlineUserList.remove(email);
-                            HttpSession newSession = request.getSession();
-                            newSession.setAttribute("User", user);
-                            OnlineUserList.put(email, newSession);
-                            return "index";
+                    try {
+                        if (user.getUserPassword().equals(password)) {
+                            if (OnlineUserList.containsKey(email)) {
+                                HttpSession session = OnlineUserList.get(email);
+                                session.invalidate();
+                                OnlineUserList.remove(email);
+                                HttpSession newSession = request.getSession();
+                                newSession.setAttribute("User", user);
+                                OnlineUserList.put(email, newSession);
+                                return "index";
+                            } else {
+                                request.getSession().setAttribute("User", user);
+                                OnlineUserList.put(email, request.getSession());
+                                return "index";
+                            }
                         } else {
-                            request.getSession().setAttribute("User", user);
-                            OnlineUserList.put(email, request.getSession());
-                            return "index";
+                            return "login";
                         }
-                    }else {
+                    }catch (NullPointerException e){
+                        e.printStackTrace();
                         return "login";
                     }
                 }
